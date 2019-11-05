@@ -163,5 +163,43 @@ Humanoid.prototype.greet = function() {
     const dmgDealt = (((Math.random() * 100) + 1) % smiteMaxDmg) + 1;
     victim.healthPoints -= dmgDealt; // Damages his foe with holy wrath
     this.healthPoints += dmgDealt; // Heals hero as it does damage to his foe
-    console.log(`${this.name} smites ${victim.name} with the wrath of the gods and is healed by divine light!`);
+    console.log(`${this.name} smites ${victim.name} with ${this.weapons[0]}!`);
+    console.log(`${this.name} has pleased the gods and is healed by divine light!`)
+
+    if (victim.healthPoints <= 0) {
+      victim.destroy();
+    }
   }
+
+  const paladin = new Hero({
+    createdAt: new Date(),
+    dimensions: {
+      length: 1,
+      width: 3,
+      height: 5,
+    },
+    healthPoints: 20,
+    name: 'Damion',
+    team: 'Highcastle',
+    weapons: [
+      'Blessed Greathammer',
+    ],
+    language: 'Old Norse',
+  });
+
+  const shadowStalker = new Villain({
+    createdAt: new Date(),
+    dimensions: {
+      length: 1,
+      width: 2,
+      height: 3,
+    },
+    healthPoints: 12,
+    name: 'Silth the Cutthroat',
+    team: 'Underground Caverns',
+    weapons: [
+      'Twisted Dagger of Pain',
+    ],
+    language: 'Goblin',
+  });
+
