@@ -19,9 +19,10 @@ function GameObject(gameObjectArgs) {
   this.createdAt = gameObjectArgs.createdAt;
   this.name = gameObjectArgs.name;
   this.dimensions = gameObjectArgs.dimensions;
-  this.destroy = function() {
-    return `${this.name} was removed from the game.`;
-  }
+}
+
+GameObject.prototype.destroy = function() {
+  return `${this.name} was removed from the game.`;
 }
 
 /*
@@ -136,3 +137,14 @@ Humanoid.prototype.greet = function() {
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+  function Villain(villainArgs) {
+    Humanoid.call(this, villainArgs);
+  }
+  Villain.prototype = Object.create(Humanoid.prototype);
+  Villain.prototype.backstab = function(victim) {
+    const circleMaxDmg = 10; // 1-circleDmg dmg points possible
+    const dmgDealt = (((Math.random() * 100) + 1) % circleMaxDmg) + 1;
+    victim.healthPoints -= dmgDealt;
+    return `${victim.name} grimaces and goes very quiet as ${this.name} backstabs him!`
+  }
