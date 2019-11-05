@@ -146,5 +146,22 @@ Humanoid.prototype.greet = function() {
     const circleMaxDmg = 10; // 1-circleDmg dmg points possible
     const dmgDealt = (((Math.random() * 100) + 1) % circleMaxDmg) + 1;
     victim.healthPoints -= dmgDealt;
-    return `${victim.name} grimaces and goes very quiet as ${this.name} backstabs him!`
+    console.log(`${victim.name} grimaces and goes very quiet as ${this.name} backstabs him!`);
+
+    if (victim.healthPoints <= 0) {
+      victim.destroy();
+    }
+  }
+
+  function Hero(heroArgs) {
+    Humanoid.call(this, heroArgs);
+  }
+
+  Hero.prototype = Object.create(Humanoid.prototype);
+  Hero.prototype.smite = function(victim) {
+    const smiteMaxDmg = 5;
+    const dmgDealt = (((Math.random() * 100) + 1) % smiteMaxDmg) + 1;
+    victim.healthPoints -= dmgDealt; // Damages his foe with holy wrath
+    this.healthPoints += dmgDealt; // Heals hero as it does damage to his foe
+    console.log(`${this.name} smites ${victim.name} with the wrath of the gods and is healed by divine light!`);
   }
