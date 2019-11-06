@@ -140,35 +140,71 @@ Humanoid.prototype.greet = function() {
 
   function Villain(villainArgs) {
     Humanoid.call(this, villainArgs);
+    this.wieldedWeapon = villainArgs.weapons[0];
+    this.attack = this.backstab;
   }
   Villain.prototype = Object.create(Humanoid.prototype);
   Villain.prototype.backstab = function(victim) {
-    const circleMaxDmg = 10; // 1-circleDmg dmg points possible
-    const dmgDealt = (((Math.random() * 100) + 1) % circleMaxDmg) + 1;
+    const backstabMaxDmg = 8; // 1-circleDmg dmg points possible
+    const dmgDealt = Math.round((((Math.random() * 100) + 1) % backstabMaxDmg) + 1);
     victim.healthPoints -= dmgDealt;
-    console.log(`${victim.name} grimaces and goes very quiet as ${this.name} backstabs him!`);
+    console.log(`${this.name} quietly backstabs ${victim.name} with a ${this.wieldedWeapon}, dealing ${dmgDealt} damage!!`);
 
     if (victim.healthPoints <= 0) {
+      console.log(`${victim.name} has died!!! R.I.P.`)
       victim.destroy();
     }
   }
 
   function Hero(heroArgs) {
     Humanoid.call(this, heroArgs);
+    this.wieldedWeapon = heroArgs.weapons[0]; 
+    this.attack = this.smite;
+    this.godsArePleased = true;
   }
 
   Hero.prototype = Object.create(Humanoid.prototype);
   Hero.prototype.smite = function(victim) {
     const smiteMaxDmg = 5;
-    const dmgDealt = (((Math.random() * 100) + 1) % smiteMaxDmg) + 1;
+    const dmgDealt = Math.round((((Math.random() * 100) + 1) % smiteMaxDmg));
     victim.healthPoints -= dmgDealt; // Damages his foe with holy wrath
-    this.healthPoints += dmgDealt; // Heals hero as it does damage to his foe
-    console.log(`${this.name} smites ${victim.name} with ${this.weapons[0]}!`);
-    console.log(`${this.name} has pleased the gods and is healed by divine light!`)
+    if (dmgDealt > 0) {
+      console.log(`${this.name} strongly smites ${victim.name} with a ${this.wieldedWeapon}, dealing ${dmgDealt} damage!!`);
+      this.godsArePleased = true;
+    } else {
+      console.log(`${this.name} swings with a ${this.wieldedWeapon} and misses ${victim.name}.`)
+      this.godsArePleased = false;
+    }
+
+          
+    if (this.godsArePleased) {
+      console.log(`${this.name} has pleased the gods and is bathed in healing light!`);
+      this.healthPoints += (dmgDealt * 0.25); // Heals hero half of damage dealt to his/her foe
+    }
 
     if (victim.healthPoints <= 0) {
+      console.log(`${victim.name} has died!!! R.I.P.`)
       victim.destroy();
+    } 
+  }
+
+  function CombatLoop(combatLoopArgs) {
+    this.attacker = combatLoopArgs.attacker; 
+    this.defender = combatLoopArgs.defender;
+    this.combat(this.attacker, this.defender); // Call this function on init
+  }
+    
+  CombatLoop.prototype.combat = function (attacker, defender) {
+    console.log(`${attacker.name} attacks ${defender.name}!`)
+
+    // Attacker gets first attack
+    while (attacker.healthPoints > 0 && defender.healthPoints > 0) {
+      attacker.attack(defender);
+      if (defender.healthPoints > 0) {
+        defender.attack(attacker);
+      }
     }
+    console.log("Combat is over!")
   }
 
   const paladin = new Hero({
@@ -187,7 +223,7 @@ Humanoid.prototype.greet = function() {
     language: 'Old Norse',
   });
 
-  const shadowStalker = new Villain({
+  const assassin = new Villain({
     createdAt: new Date(),
     dimensions: {
       length: 1,
@@ -195,11 +231,15 @@ Humanoid.prototype.greet = function() {
       height: 3,
     },
     healthPoints: 12,
-    name: 'Silth the Cutthroat',
+    name: 'Slilth the Cutthroat',
     team: 'Underground Caverns',
     weapons: [
-      'Twisted Dagger of Pain',
+      'Serrated Black Steel Dagger',
     ],
     language: 'Goblin',
   });
 
+ const combat = new CombatLoop({
+    attacker: assassin, 
+    defender: paladin
+  });
