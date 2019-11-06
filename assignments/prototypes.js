@@ -151,7 +151,7 @@ Humanoid.prototype.greet = function() {
     console.log(`${this.name} quietly backstabs ${victim.name} with a ${this.wieldedWeapon}, dealing ${dmgDealt} damage!!`);
 
     if (victim.healthPoints <= 0) {
-      console.log(`${victim.name} has died!!! R.I.P.`)
+      console.log(`${victim.name} has died!!!`)
       victim.destroy();
     }
   }
@@ -183,19 +183,20 @@ Humanoid.prototype.greet = function() {
     }
 
     if (victim.healthPoints <= 0) {
-      console.log(`${victim.name} has died!!! R.I.P.`)
+      console.log(`${victim.name} has died!!!`)
       victim.destroy();
     } 
   }
 
   function CombatLoop(combatLoopArgs) {
-    this.attacker = combatLoopArgs.attacker; 
+    this.attacker = combatLoopArgs.attacker;
     this.defender = combatLoopArgs.defender;
     this.combat(this.attacker, this.defender); // Call this function on init
   }
     
   CombatLoop.prototype.combat = function (attacker, defender) {
-    console.log(`${attacker.name} attacks ${defender.name}!`)
+    console.log(`${attacker.name} attacks ${defender.name}!`);
+    console.log("");
 
     // Attacker gets first attack
     while (attacker.healthPoints > 0 && defender.healthPoints > 0) {
@@ -204,7 +205,9 @@ Humanoid.prototype.greet = function() {
         defender.attack(attacker);
       }
     }
-    console.log("Combat is over!")
+
+    console.log("");
+    console.log("Combat is over!");
   }
 
   const paladin = new Hero({
