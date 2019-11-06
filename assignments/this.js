@@ -26,7 +26,7 @@ const obj = {
         return this.age * 2;
     }
 }
-console.log(obj.doubleAge()); // should log 200
+// console.log(obj.doubleAge()); // should log 200
 
 // Principle 3
 
@@ -42,7 +42,7 @@ function Person(name, age) {
     }
 }
 let me = new Person("David", 75);
-console.log(me.doubleAge()); // should log 150
+// console.log(me.doubleAge()); // should log 150
 
 // Principle 4
 
@@ -58,5 +58,5 @@ function Dog(name, age, favFood) {
 let scruffy = new Dog("Scruffy", 7, "Bacon");
 
 // Use explicit binding to bind one object to another object's method call
-console.log(me.speak.call(scruffy)); // should log 'Hi! My name is Scruffy!'
-console.log(scruffy.bark.call(me)); // should log 'David says, 'Ruff Ruff!''
+// console.log(me.speak.call(scruffy)); // should log 'Hi! My name is Scruffy!'
+// console.log(scruffy.bark.call(me)); // should log 'David says, 'Ruff Ruff!''
